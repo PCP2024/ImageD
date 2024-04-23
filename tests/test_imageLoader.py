@@ -1,5 +1,6 @@
 import unittest
 from ..dataio.imageLoader import main
+import sys
 
 
 class ImageLoaderTestCase(unittest.TestCase):
