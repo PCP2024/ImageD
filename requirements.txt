@@ -1,1 +1,2 @@
 probably wrong requirements 
+aitana tests requirements
