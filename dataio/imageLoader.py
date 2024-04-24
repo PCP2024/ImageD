@@ -1,36 +1,106 @@
-import sys
 from PIL import Image
 from typing import List
 
 
-def main() -> None:
-    # Check if the user has provided an image file.
-    if len(sys.argv) != 2:
-        print("Usage: python3 Assignment 1.py <image>")
-        sys.exit(1)
-
-    # Load the image.
-    print("Loading image.")
-    image: Image.Image = Image.open(sys.argv[1])
-
-    # Print the image's details.
-    # Data type:
-    print("Image data type:", image.mode)
-    # Image size:
-    print("Image size:", image.size)
-
-    # Display the image.
-    print("Displaying image. Close the window to exit.")
-    image.show()
-
-    # Wait until the user closes the window.
-    print("Image closing.")
-    image.close()
-
-    # Exit the program.
-    print("Image closed. Exiting.")
-    sys.exit(0)
+class ImageLoadException(Exception):
+    """
+    Exception raised when there is an error loading an image.
+    """
+    pass
 
 
-if __name__ == "__main__":
-    main()
+class ImageLoader:
+    """A class for loading, manipulating, and saving images."""
+
+    def __init__(self, image_path: str) -> None:
+        """
+        Initialize the ImageLoader object.
+
+        Args:
+            image_path (str): The path to the image file.
+        """
+        self.image_path = image_path
+
+    def __call__(self) -> Image.Image:
+        """
+        Load and return the image.
+
+        Returns:
+            Image.Image: The loaded image.
+        """
+        # Load the image.
+        print("Loading image.")
+        image = self.load_image()
+
+        # Print the image's details.
+        self.print_image_details(image)
+
+        # Return the loaded image.
+        return image
+
+    def load_image(self) -> Image.Image:
+        """
+        Load the image from the specified path.
+
+        Returns:
+            Image.Image: The loaded image.
+
+        Raises:
+            ImageLoadException: If failed to load the image.
+        """
+        try:
+            return Image.open(self.image_path)
+        except Exception as e:
+            raise ImageLoadException("Failed to load image.") from e
+
+    def print_image_details(self, image: Image.Image) -> None:
+        """
+        Print the details of the image.
+
+        Args:
+            image (Image.Image): The image to print the details of.
+        """
+        print("Image data type:", image.mode)
+        print("Image size:", image.size)
+
+    def close_image(self, image: Image.Image) -> None:
+        """
+        Close the image.
+
+        Args:
+            image (Image.Image): The image to close.
+        """
+        print("Image closing.")
+        image.close()
+
+    def show_image(self, image: Image.Image) -> None:
+        """
+        Show the image.
+
+        Args:
+            image (Image.Image): The image to show.
+        """
+        print("Showing image.")
+        image.show()
+
+    def save_image(self, image: Image.Image, save_path: str, format: str = None) -> None:
+        """
+        Save the image to the specified path.
+
+        Args:
+            image (Image.Image): The image to save.
+            save_path (str): The path to save the image.
+            format (str, optional): The format to save the image in. Defaults to None.
+
+        Raises:
+            ValueError: If the image format is invalid.
+        """
+        # Validate the format.
+        valid_formats = ["jpg", "jpeg", "png", "gif"]
+        if format:
+            if format not in valid_formats:
+                raise ValueError("Invalid image format")
+
+        # Save the image.
+        image.save(save_path, format)
+        print("Image saved at:", save_path)
