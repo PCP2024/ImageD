@@ -6,10 +6,10 @@ Written by Anastasia Simonoff for ImageD; PCP, 2024.
 The `ImageLoader` class is a utility class designed to simplify the process of loading images in your application.
 
 ## Installation
-To use the `ImageLoader` class, simply import it into your project.
+To use the `ImageLoader` class, simply import it into the folder that you need.
 
 ```python
-from your_package import ImageLoader
+from ..dataio.imageLoader import ImageLoader
 ```
 
 ## Usage
