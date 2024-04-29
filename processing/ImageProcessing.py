@@ -5,7 +5,7 @@ from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageChops
 
-img = Image.open("demodata\\test_image.jpeg")
+# img = Image.open("demodata\\test_image.jpeg")
 
 """
 Class for processing images. 
@@ -74,3 +74,29 @@ class ImageProcessor:
         new_image = ims.enhance(param)
         new_image.show()
         return new_image
+
+
+def substract(im1: Image, im2: Image, **kwargs) -> Image:
+    """
+    Substracts two images
+    For absolute difference use ImageChops.difference
+    Args:
+        im1: first image
+        im2: second image
+    Returns:
+        image containing the substraction of the two images
+    """
+    return ImageChops.subtract(im1, im2, **kwargs)
+
+
+def difference(im1: Image, im2: Image, **kwargs) -> Image:
+    """
+    Absolute difference between two images
+    For substraction use ImageChops.substract
+    Args:
+        im1: first image
+        im2: second image
+    Returns:
+        image containing the abs difference between the two images
+    """
+    return ImageChops.difference(im1, im2, **kwargs)
