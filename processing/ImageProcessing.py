@@ -3,6 +3,7 @@
 
 from PIL import Image
 from PIL import ImageEnhance
+from PIL import ImageChops
 
 img = Image.open("demodata\\test_image.jpeg")
 
@@ -10,6 +11,7 @@ img = Image.open("demodata\\test_image.jpeg")
 Class for processing images. 
 Adjusts: Brightness, contrast, color, sharpness.
 """
+
 
 class ImageProcessor:
 
@@ -33,7 +35,7 @@ class ImageProcessor:
         new_image = imb.enhance(param)
         new_image.show()
         return new_image
-    
+
     def contrast(self, param):
         """
         Adjusts image contrast
@@ -42,11 +44,11 @@ class ImageProcessor:
         Returns:
             contrast adjusted image
         """
-        imc = ImageEnhance.Contrast(self.image) 
-        new_image = imc.enhance(param) 
+        imc = ImageEnhance.Contrast(self.image)
+        new_image = imc.enhance(param)
         new_image.show()
         return new_image
-    
+
     def color(self, param):
         """
         Adjusts image colors
@@ -55,11 +57,11 @@ class ImageProcessor:
         Returns:
             contrast adjusted image
         """
-        imc = ImageEnhance.Color(self.image) 
-        new_image = imc.enhance(param) 
+        imc = ImageEnhance.Color(self.image)
+        new_image = imc.enhance(param)
         new_image.show()
         return new_image
-    
+
     def sharpness(self, param):
         """
         Adjusts image colors
@@ -68,7 +70,7 @@ class ImageProcessor:
         Returns:
             contrast adjusted image
         """
-        ims = ImageEnhance.Sharpness(self.image) 
-        new_image = ims.enhance(param) 
+        ims = ImageEnhance.Sharpness(self.image)
+        new_image = ims.enhance(param)
         new_image.show()
         return new_image
