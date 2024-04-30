@@ -1,74 +1,63 @@
-# Write function to change colours, saturation, and lighting
-# Image in PIL
-
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageChops
 
-# img = Image.open("demodata\\test_image.jpeg")
-
-"""
-Class for processing images. 
-Adjusts: Brightness, contrast, color, sharpness.
-"""
-
 
 class ImageProcessor:
-
-    def __init__(self, im) -> None:
+    def __init__(self, im: Image.Image) -> None:
         """
         Initialize the ImageProcessor object.
         Args:
-            variable containing PIL image.
+            im: PIL image object.
         """
         self.image = im
 
-    def brightness(self, param):
+    def brightness(self, param: float) -> Image.Image:
         """
-        Adjusts image brightness
+        Adjusts image brightness.
         Args:
-            param: brightness parameter. 0:black, 1: same, >1: brighter
+            param: brightness parameter. 0: black, 1: same, >1: brighter.
         Returns:
-            brightness adjusted image
+            brightness adjusted image.
         """
         imb = ImageEnhance.Brightness(self.image)
         new_image = imb.enhance(param)
         new_image.show()
         return new_image
 
-    def contrast(self, param):
+    def contrast(self, param: float) -> Image.Image:
         """
-        Adjusts image contrast
+        Adjusts image contrast.
         Args:
-            param: contrast parameter. 0:full grey, 1: same, >1: more contrast
+            param: contrast parameter. 0: full grey, 1: same, >1: more contrast.
         Returns:
-            contrast adjusted image
+            contrast adjusted image.
         """
         imc = ImageEnhance.Contrast(self.image)
         new_image = imc.enhance(param)
         new_image.show()
         return new_image
 
-    def color(self, param):
+    def color(self, param: float) -> Image.Image:
         """
-        Adjusts image colors
+        Adjusts image colors.
         Args:
-            param: color parameter. 0:black and white, 1: same, >1: enhanced colors
+            param: color parameter. 0: black and white, 1: same, >1: enhanced colors.
         Returns:
-            contrast adjusted image
+            color adjusted image.
         """
         imc = ImageEnhance.Color(self.image)
         new_image = imc.enhance(param)
         new_image.show()
         return new_image
 
-    def sharpness(self, param):
+    def sharpness(self, param: float) -> Image.Image:
         """
-        Adjusts image colors
+        Adjusts image sharpness.
         Args:
-            param: sharpness parameter. 0:blurr, 1: same, >1: sharpened image
+            param: sharpness parameter. 0: blur, 1: same, >1: sharpened image.
         Returns:
-            contrast adjusted image
+            sharpness adjusted image.
         """
         ims = ImageEnhance.Sharpness(self.image)
         new_image = ims.enhance(param)
@@ -76,27 +65,27 @@ class ImageProcessor:
         return new_image
 
 
-def substract(im1: Image, im2: Image, **kwargs) -> Image:
+def subtract(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
     """
-    Substracts two images
-    For absolute difference use ImageChops.difference
+    Subtracts two images.
+    For absolute difference, use ImageChops.difference.
     Args:
-        im1: first image
-        im2: second image
+        im1: first image.
+        im2: second image.
     Returns:
-        image containing the substraction of the two images
+        image containing the subtraction of the two images.
     """
     return ImageChops.subtract(im1, im2, **kwargs)
 
 
-def difference(im1: Image, im2: Image, **kwargs) -> Image:
+def difference(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
     """
-    Absolute difference between two images
-    For substraction use ImageChops.substract
+    Absolute difference between two images.
+    For subtraction, use ImageChops.subtract.
     Args:
-        im1: first image
-        im2: second image
+        im1: first image.
+        im2: second image.
     Returns:
-        image containing the abs difference between the two images
+        image containing the absolute difference between the two images.
     """
     return ImageChops.difference(im1, im2, **kwargs)
