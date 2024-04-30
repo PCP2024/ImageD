@@ -1,3 +1,1 @@
-probably wrong requirements 
-aitana tests requirements
-aitana tests again
+PIL == 9.5.0
