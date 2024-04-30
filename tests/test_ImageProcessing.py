@@ -1,7 +1,6 @@
 import unittest
 from PIL import Image, ImageEnhance
-from processing.ImageProcessing import difference, substract
-from ..processing.ImageProcessing import ImageProcessor
+from processing.ImageProcessing import difference, subtract, ImageProcessor
 
 
 class TestImageProcessing(unittest.TestCase):
@@ -27,13 +26,13 @@ class TestImageProcessing(unittest.TestCase):
         expected_pixels = [(255, 0, 255)] * 100 * 100  # All magenta pixels
         self.assertEqual(list(result.getdata()), expected_pixels)
 
-    def test_substract(self):
+    def test_subtract(self):
         # Create two test images
         im1 = Image.new("RGB", (100, 100), color="red")
         im2 = Image.new("RGB", (100, 100), color="blue")
 
         # Call the substract function
-        result = substract(im1, im2)
+        result = subtract(im1, im2)
 
         # Assert that the result is an instance of the Image class
         self.assertIsInstance(result, Image.Image)
