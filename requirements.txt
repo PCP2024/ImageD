@@ -1,4 +1,2 @@
-probably wrong requirements 
-aitana tests requirements
-aitana tests again
-change
+PIL == 9.5.0
+rembg==2.0.56
