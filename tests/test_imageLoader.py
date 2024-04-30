@@ -1,11 +1,12 @@
 import unittest
 from PIL import Image
 from ..dataio.imageLoader import ImageLoader, ImageLoadException
+from pathlib import Path
 
 
 class TestImageLoader(unittest.TestCase):
     def setUp(self):
-        self.image_path = "/path/to/image.jpg"
+        self.image_path = Path("demodata/test_image.jpeg")
         self.loader = ImageLoader(self.image_path)
 
     def tearDown(self):
@@ -23,7 +24,7 @@ class TestImageLoader(unittest.TestCase):
 
     def test_save_image(self):
         image = Image.new("RGB", (800, 600))
-        save_path = "/path/to/save/image.jpg"
+        save_path = str(self.image_path.parent / "image.jpg")
         self.loader.save_image(image, save_path)
         # Add assertions to check if the image is saved correctly
 
