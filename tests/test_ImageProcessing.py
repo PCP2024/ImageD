@@ -1,6 +1,7 @@
 import unittest
 from PIL import Image, ImageEnhance
-from processing.ImageProcessing import difference, substract, ImageProcessor
+from processing.ImageProcessing import difference, substract
+from ..processing.ImageProcessing import ImageProcessor
 
 
 class TestImageProcessing(unittest.TestCase):
