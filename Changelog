@@ -16,4 +16,24 @@ Chores:
 ### by 14.05.24
 
 Chores:
-- JSON file in configuration?
+- JSON file in configuration - need at least one function with saved parameters
+- Get a command line interface (this is key!!)
+- We should decide on whether we want a graphical user interface
+- prepare presentation!!!
+- Ana: fix loader tests
+- Lilli: Detect edges and watermark
+- Michal: remove background and contour detection
+- Aitana: Add text to image, set a scale, and presentation, write help function
+
+Intended final product:
+- Definitely want graphical user interface (tkinter)
+- Main: microscopy images
+- Summarise: mean, std, etc-
+- Basics: rotate, resize, saturations, etc.
+- Set a scale, measure (with units), 
+- convolutions, gaussian filters, mexican hats, etc.
+- selection tool, colour picker etc.
+- history of images and proper undo
+- automatic counting and manual adjusting (once we have graphical interface), automatic edge and contour detection.
+- image, not movies
+- Meet Tuesday 3pm for final discussion
