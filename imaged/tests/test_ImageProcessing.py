@@ -110,6 +110,54 @@ class ImageProcessorTest(unittest.TestCase):
         # Assert that the result image has the same size as the input image
         self.assertEqual(result.size, im.size)
 
+    def test_rotate(self):
+        # Create a test image
+        im = Image.new("RGB", (100, 100), color="red")
+
+        # Create an ImageProcessor object
+        processor = ImageProcessor(im)
+
+        # Call the rotate method
+        result = processor.rotate(90)
+
+        # Assert that the result is an instance of the Image class
+        self.assertIsInstance(result, Image.Image)
+
+        # Assert that the result image has the expected size
+        self.assertEqual(result.size, (100, 100))
+
+    def test_resize(self):
+        # Create a test image
+        im = Image.new("RGB", (100, 100), color="red")
+
+        # Create an ImageProcessor object
+        processor = ImageProcessor(im)
+
+        # Call the resize method
+        result = processor.resize((50, 50))
+
+        # Assert that the result is an instance of the Image class
+        self.assertIsInstance(result, Image.Image)
+
+        # Assert that the result image has the expected size
+        self.assertEqual(result.size, (50, 50))
+
+    def test_reshape(self):
+        # Create a test image
+        im = Image.new("RGB", (100, 100), color="red")
+
+        # Create an ImageProcessor object
+        processor = ImageProcessor(im)
+
+        # Call the reshape method
+        result = processor.reshape((50, 50))
+
+        # Assert that the result is an instance of the Image class
+        self.assertIsInstance(result, Image.Image)
+
+        # Assert that the result image has the expected size
+        self.assertEqual(result.size, (50, 50))
+
 
 if __name__ == "__main__":
     unittest.main()
