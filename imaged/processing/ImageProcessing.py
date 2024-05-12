@@ -89,3 +89,35 @@ def difference(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
         image containing the absolute difference between the two images.
     """
     return ImageChops.difference(im1, im2, **kwargs)
+def resize(im: Image.Image, size: tuple) -> Image.Image:
+    """
+    Resizes the image.
+    Args:
+        im: image to be resized.
+        size: new size.
+    Returns:
+        resized image.
+    """
+    return im.resize(size)
+
+def reshape(im: Image.Image, size: tuple) -> Image.Image:
+    """
+    Reshapes the image.
+    Args:
+        im: image to be reshaped.
+        size: new size.
+    Returns:
+        reshaped image.
+    """
+    return im.resize(size)
+
+def rotate(im: Image.Image, angle: float) -> Image.Image:
+    """
+    Rotates the image.
+    Args:
+        im: image to be rotated.
+        angle: rotation angle in degrees.
+    Returns:
+        rotated image.
+    """
+    return im.rotate(angle)
