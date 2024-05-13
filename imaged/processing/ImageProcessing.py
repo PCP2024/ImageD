@@ -1,3 +1,4 @@
+import rembg
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageChops
@@ -64,7 +65,6 @@ class ImageProcessor:
         new_image = ims.enhance(param)
         new_image.show()
         return new_image
-    
 
 
 def subtract(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
@@ -92,6 +92,7 @@ def difference(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
     """
     return ImageChops.difference(im1, im2, **kwargs)
 
+
 def resize(im: Image.Image, size: tuple) -> Image.Image:
     """
     Resizes the image.
@@ -102,6 +103,7 @@ def resize(im: Image.Image, size: tuple) -> Image.Image:
         resized image.
     """
     return im.resize(size)
+
 
 def reshape(im: Image.Image, size: tuple) -> Image.Image:
     """
@@ -114,6 +116,7 @@ def reshape(im: Image.Image, size: tuple) -> Image.Image:
     """
     return im.resize(size)
 
+
 def rotate(im: Image.Image, angle: float) -> Image.Image:
     """
     Rotates the image.
@@ -125,16 +128,27 @@ def rotate(im: Image.Image, angle: float) -> Image.Image:
     """
     return im.rotate(angle)
 
+
 def addtext(im: Image.Image, texts, font, c: tuple, loc: tuple):
 
     # create draw object
     img = im
-    draw = ImageDraw.Draw(img) 
-    draw.text(xy=loc, 
-          text=texts, 
-          font=font, 
-          fill=c)
-    
+    draw = ImageDraw.Draw(img)
+    draw.text(xy=loc, text=texts, font=font, fill=c)
+
     img.show()
     return img
 
+
+def remove_background(im: Image.Image, **kwargs) -> Image.Image:
+    """
+    Removes the background from the given image.
+
+    Args:
+        im (PIL.Image.Image): The input image to remove the background from.
+        **kwargs: Additional keyword arguments to be passed to the `rembg.remove` function.
+
+    Returns:
+        PIL.Image.Image: The image with the background removed.
+    """
+    return rembg.remove(im, **kwargs)

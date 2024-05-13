@@ -1,6 +1,11 @@
 import unittest
 from PIL import Image, ImageEnhance
-from processing.ImageProcessing import difference, subtract, ImageProcessor
+from processing.ImageProcessing import (
+    difference,
+    subtract,
+    ImageProcessor,
+    remove_background,
+)
 
 
 class TestImageProcessing(unittest.TestCase):
@@ -157,6 +162,20 @@ class ImageProcessorTest(unittest.TestCase):
 
         # Assert that the result image has the expected size
         self.assertEqual(result.size, (50, 50))
+
+    def test_remove_background(self):
+        # Create a test image
+        # im = Image.new("RGB", (100, 100), color="red")
+        im = Image.open("demodata/test_image.jpg")
+
+        # Call the remove_background function
+        result = remove_background(im)
+
+        # Assert that the result is an instance of the Image class
+        self.assertIsInstance(result, Image.Image)
+
+        # Assert that the result image has the same size as the input image
+        self.assertEqual(result.size, im.size)
 
 
 if __name__ == "__main__":
