@@ -49,21 +49,23 @@ class ImageLoader:
             ImageLoadException: If failed to load the image.
         """
         try:
-            return Image.open(self.image_path)
+            self.image = Image.open(self.image_path)
+            print("Image loaded.")
+            return self.image
         except Exception as e:
             raise ImageLoadException("Failed to load image.") from e
 
-    def print_image_details(self, image: Image.Image) -> None:
+    def print_image_details(self) -> None:
         """
         Print the details of the image.
 
         Args:
             image (Image.Image): The image to print the details of.
         """
-        print("Image data type:", image.mode)
-        print("Image size:", image.size)
+        print("Image data type:", self.image.mode)
+        print("Image size:", self.image.size)
 
-    def close_image(self, image: Image.Image) -> None:
+    def close_image(self) -> None:
         """
         Close the image.
 
@@ -71,9 +73,9 @@ class ImageLoader:
             image (Image.Image): The image to close.
         """
         print("Image closing.")
-        image.close()
+        self.image.close()
 
-    def show_image(self, image: Image.Image) -> None:
+    def show_image(self) -> None:
         """
         Show the image.
 
@@ -81,9 +83,9 @@ class ImageLoader:
             image (Image.Image): The image to show.
         """
         print("Showing image.")
-        image.show()
+        self.image.show()
 
-    def save_image(self, image: Image.Image, save_path: str, format: str = None) -> None:
+    def save_image(self, save_path: str, format: str = None) -> None:
         """
         Save the image to the specified path.
 
@@ -102,5 +104,5 @@ class ImageLoader:
                 raise ValueError("Invalid image format")
 
         # Save the image.
-        image.save(save_path, format)
+        self.image.save(save_path, format)
         print("Image saved at:", save_path)
