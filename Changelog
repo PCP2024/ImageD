@@ -23,7 +23,7 @@ Chores:
 - Ana: fix loader tests
 - Lilli: Detect edges and watermark
 - Michal: remove background and contour detection
-- Aitana: Add text to image, set a scale, and presentation, write help function
+- Aitana: Add text to image, set a scale, and presentation
 
 Intended final product:
 - Definitely want graphical user interface (tkinter)
