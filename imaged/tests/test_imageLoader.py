@@ -1,6 +1,6 @@
 import unittest
 from PIL import Image
-from imageLoader import ImageLoader, ImageLoadException
+from ..dataio.imageLoader import ImageLoader, ImageLoadException
 
 
 class ImageLoaderTests(unittest.TestCase):
