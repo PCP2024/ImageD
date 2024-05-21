@@ -37,3 +37,7 @@ Intended final product:
 - automatic counting and manual adjusting (once we have graphical interface), automatic edge and contour detection.
 - image, not movies
 - Meet Tuesday 3pm for final discussion
+
+
+Command line interface
+- sys.argv, argparse
