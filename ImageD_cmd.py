@@ -23,7 +23,7 @@ def main():
                         help="""
         Adjusts image brightness.
         Args:
-            param: brightness parameter. 0: black, 1: same, >1: brighter.
+            BRIGHTNESS_RATIO: brightness ratio. 0: black, 1: same, >1: brighter.
         Returns:
             brightness adjusted image.
         """)
@@ -31,7 +31,7 @@ def main():
                         help="""
         Adjusts image contrast.
         Args:
-            param: contrast parameter. 0: full grey, 1: same, >1: more contrast.
+            CONTRAST_RATIO: contrast ratio. 0: full grey, 1: same, >1: more contrast.
         Returns:
             contrast adjusted image.
         """)
@@ -39,7 +39,7 @@ def main():
                         help="""
         Adjusts image colors.
         Args:
-            param: color parameter. 0: black and white, 1: same, >1: enhanced colors.
+            COLOR_RATIO: color ratio. 0: black and white, 1: same, >1: enhanced colors.
         Returns:
             color adjusted image.
         """)
@@ -48,7 +48,7 @@ def main():
                         help="""
         Adjusts image sharpness.
         Args:
-            param: sharpness parameter. 0: blur, 1: same, >1: sharpened image.
+            SHARPNESS_RATIO: sharpness ratio. 0: blur, 1: same, >1: sharpened image.
         Returns:
             sharpness adjusted image.
         """)
@@ -57,8 +57,8 @@ def main():
                         help="""
     Resizes the image.
     Args:
-        size1: integer, horizontal pixel number
-        size2: integer, vertical pixel number
+        HORIZ_PX: integer, horizontal pixel count
+        VERT_PX: integer, vertical pixel count
     Returns:
         resized image.
     """)
