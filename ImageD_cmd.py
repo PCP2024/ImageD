@@ -46,6 +46,23 @@ def main():
         Returns:
             sharpness adjusted image.
         """)
+    
+    parser.add_argument("--resize", nargs = 2, type = int, help = """
+    Resizes the image.
+    Args:
+        size1: integer, horizontal pixel number
+        size2: integer, vertical pixel number
+    Returns:
+        resized image.
+    """)
+
+    parser.add_argument("--rotate", type = float, help = """
+    Rotates the image.
+    Args:
+        angle: counter-clockwise rotation angle in degrees
+    Returns:
+        rotated image.
+    """)
 
     
     args = parser.parse_args()
@@ -53,6 +70,7 @@ def main():
     # Load input images 1 and 2
     imload_instance = imaged.dataio.ImageLoader(args.input_image)
     image = imload_instance.load_image()
+    imload_instance.show_image(image)
 
     # Process image
     if args.brightness is not None:
@@ -71,7 +89,15 @@ def main():
         process_instance = imaged.processing.ImageProcessing.ImageProcessor(image)
         image = process_instance.contrast(args.sharpness)
 
-    # output
+    if args.resize is not None:
+        image = imaged.processing.ImageProcessing.resize(image, tuple(args.resize))
+        image.show()
+
+    if args.rotate is not None:
+        image = imaged.processing.ImageProcessing.rotate(image, args.rotate)
+        image.show()
+
+    # output ()
     if args.output_image is not None:
         output_instance = imaged.dataio.ImageLoader(args.output_image)
         output_instance.save_image(image, save_path=args.output_image)
