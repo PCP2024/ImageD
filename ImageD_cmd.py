@@ -15,7 +15,6 @@ def main():
     
     parser.add_argument("--version", action = "version", version = program_version)
     parser.add_argument("input_image", help="file path for input image 1")
-    parser.add_argument("input_image2", help="file path for input image 2")
     parser.add_argument("-o","--output_image", help="file path for output image")
 
     parser.add_argument("--brightness", type=float, help="""
@@ -54,10 +53,6 @@ def main():
     # Load input images 1 and 2
     imload_instance = imaged.dataio.ImageLoader(args.input_image)
     image = imload_instance.load_image()
-
-    if args.input_image2 is not None:
-        imload_instance2 = imaged.dataio.ImageLoader(args.input_image2)
-        image2 = imload_instance.load_image()
 
     # Process image
     if args.brightness is not None:
