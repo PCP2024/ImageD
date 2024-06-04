@@ -64,7 +64,6 @@ class ImageProcessor:
         new_image = ims.enhance(param)
         new_image.show()
         return new_image
-    
 
 
 def subtract(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
@@ -92,6 +91,7 @@ def difference(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
     """
     return ImageChops.difference(im1, im2, **kwargs)
 
+
 def resize(im: Image.Image, size: tuple) -> Image.Image:
     """
     Resizes the image.
@@ -102,6 +102,7 @@ def resize(im: Image.Image, size: tuple) -> Image.Image:
         resized image.
     """
     return im.resize(size)
+
 
 def reshape(im: Image.Image, size: tuple) -> Image.Image:
     """
@@ -114,6 +115,7 @@ def reshape(im: Image.Image, size: tuple) -> Image.Image:
     """
     return im.resize(size)
 
+
 def rotate(im: Image.Image, angle: float) -> Image.Image:
     """
     Rotates the image.
@@ -125,16 +127,16 @@ def rotate(im: Image.Image, angle: float) -> Image.Image:
     """
     return im.rotate(angle)
 
+
 def addtext(im: Image.Image, texts, font, c: tuple, loc: tuple):
 
     # create draw object
     img = im
-    draw = ImageDraw.Draw(img) 
-    draw.text(xy=loc, 
-          text=texts, 
-          font=font, 
-          fill=c)
-    
+    draw = ImageDraw.Draw(img)
+    draw.text(xy=loc,
+              text=texts,
+              font=font,
+              fill=c)
+
     img.show()
     return img
-
