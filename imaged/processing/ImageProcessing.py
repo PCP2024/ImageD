@@ -36,7 +36,7 @@ class ImageProcessor:
         """
         imc = ImageEnhance.Contrast(self.image)
         new_image = imc.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
 
     def color(self, param: float) -> Image.Image:
@@ -49,7 +49,7 @@ class ImageProcessor:
         """
         imc = ImageEnhance.Color(self.image)
         new_image = imc.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
 
     def sharpness(self, param: float) -> Image.Image:
@@ -62,7 +62,7 @@ class ImageProcessor:
         """
         ims = ImageEnhance.Sharpness(self.image)
         new_image = ims.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
 
 
@@ -138,5 +138,5 @@ def addtext(im: Image.Image, texts, font, c: tuple, loc: tuple):
               font=font,
               fill=c)
 
-    img.show()
+    # img.show()
     return img
