@@ -64,6 +64,14 @@ class ImageProcessor:
         new_image = ims.enhance(param)
         new_image.show()
         return new_image
+    
+    def save_image(self, path: str) -> None:
+        """
+        Saves the image to the specified path.
+        Args:
+            path: The file path to save the image to.
+        """
+        self.image.save(path)
 
 
 def subtract(im1: Image.Image, im2: Image.Image, **kwargs) -> Image.Image:
@@ -125,7 +133,8 @@ def rotate(im: Image.Image, angle: float) -> Image.Image:
     Returns:
         rotated image.
     """
-    return im.rotate(angle)
+    return im.rotate(angle, expand=True)  # Add expand=True to handle image size changes
+
 
 
 def addtext(im: Image.Image, texts, font, c: tuple, loc: tuple):
