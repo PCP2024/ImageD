@@ -1,3 +1,25 @@
+### Version 1.1.0
+- Added `remove_background` function to the image processing module.
+- The `remove_background` function utilizes advanced algorithms from the `rembg` library 
+to accurately remove the background from images.
+- It takes an input image and returns the image with the background removed.
+- This function is a crucial addition to the image processing capabilities of the application.
+- GUI & CMD for works with `remove_background`
+
+
+### Version 1.0.0
+First major release with GUI!
+
+- Introduced a Graphical User Interface (GUI) for easier interaction with the application.
+- The GUI supports loading, saving, rotating, resizing, and changing the resolution of images.
+- Added functionality to edit image metadata directly from the GUI.
+- Implemented image processing features such as color adjustment, saturation, and contrast through the GUI.
+- Integrated a command line interface (CLI) for advanced users, supporting all functionalities available in the GUI.
+- Enhanced user experience with a straightforward and intuitive design, making image processing tasks more accessible to users.
+- Fixed various bugs and improved the stability of the application.
+
+
+
 ### Version 0.0.1 -  by 30.04.24
 
 Chores:
