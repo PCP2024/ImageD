@@ -22,7 +22,15 @@ from PyQt6.QtGui import QIcon, QAction, QPixmap
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QImage
 from PIL import Image, ImageQt, ImageFont, ImageEnhance
-from imaged.processing.ImageProcessing import ImageProcessor, resize, reshape, rotate, addtext
+from imaged.processing.ImageProcessing import (
+    ImageProcessor,
+    resize,
+    reshape,
+    rotate,
+    addtext,
+    remove_background,
+)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -73,8 +81,9 @@ class MainWindow(QMainWindow):
             ("Resize", self.edit_resize),
             ("Rotate", self.edit_rotate),
             ("Add Text", self.edit_addtext),
+            ("Remove Background", self.edit_remove_background),
         ]
-        
+
         for name, method in actions:
             action = QAction(name, self)
             action.triggered.connect(self.wrap_in_try_except(method, name))
@@ -95,6 +104,7 @@ class MainWindow(QMainWindow):
             except Exception as e:
                 print(f"Error in action '{action_name}': {e}")
                 traceback.print_exc()
+
         return wrapper
 
     def button_clicked_load(self):
@@ -112,20 +122,22 @@ class MainWindow(QMainWindow):
     def apply_adjustments(self, image):
         enhancer = ImageEnhance.Brightness(image)
         image = enhancer.enhance(self.brightness_param)
-        
+
         enhancer = ImageEnhance.Contrast(image)
         image = enhancer.enhance(self.contrast_param)
-        
+
         enhancer = ImageEnhance.Color(image)
         image = enhancer.enhance(self.color_param)
-        
+
         enhancer = ImageEnhance.Sharpness(image)
         image = enhancer.enhance(self.sharpness_param)
-        
+
         return image
 
     def show_image(self, image):
-        self.image = self.apply_adjustments(image)  # Apply adjustments before displaying
+        self.image = self.apply_adjustments(
+            image
+        )  # Apply adjustments before displaying
         self.image_processor.image = self.image  # Update the processor's image
         qt_image = ImageQt.ImageQt(self.image)
         pixmap = QPixmap.fromImage(qt_image)
@@ -209,6 +221,16 @@ class MainWindow(QMainWindow):
                         self.image_processor.image = new_image
                         self.show_image(new_image)
 
+    def edit_remove_background(self):
+        if not self.image_processor:
+            return
+        try:
+            new_image = remove_background(self.image)
+            self.show_image(new_image)
+        except Exception as e:
+            print(f"Error removing background: {e}")
+            traceback.print_exc()
+
     def save_image(self):
         if not self.image_processor:
             return
@@ -231,7 +253,9 @@ class MainWindow(QMainWindow):
         layout.addWidget(slider)
         line_edit = QLineEdit()
         layout.addWidget(line_edit)
-        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
@@ -254,7 +278,9 @@ class MainWindow(QMainWindow):
         height_edit = QLineEdit()
         height_edit.setPlaceholderText("Height")
         layout.addWidget(height_edit)
-        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
@@ -274,7 +300,9 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         line_edit = QLineEdit()
         layout.addWidget(line_edit)
-        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
@@ -299,7 +327,9 @@ class MainWindow(QMainWindow):
         y_edit = QLineEdit()
         y_edit.setPlaceholderText("Y")
         layout.addWidget(y_edit)
-        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
         button_box.accepted.connect(dialog.accept)
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
@@ -319,11 +349,13 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         return None
 
+
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     app.exec()
+
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,5 @@
+import rembg
+
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageChops
@@ -23,7 +25,7 @@ class ImageProcessor:
         """
         imb = ImageEnhance.Brightness(self.image)
         new_image = imb.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
 
     def contrast(self, param: float) -> Image.Image:
@@ -36,7 +38,7 @@ class ImageProcessor:
         """
         imc = ImageEnhance.Contrast(self.image)
         new_image = imc.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
 
     def color(self, param: float) -> Image.Image:
@@ -49,7 +51,7 @@ class ImageProcessor:
         """
         imc = ImageEnhance.Color(self.image)
         new_image = imc.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
 
     def sharpness(self, param: float) -> Image.Image:
@@ -62,7 +64,7 @@ class ImageProcessor:
         """
         ims = ImageEnhance.Sharpness(self.image)
         new_image = ims.enhance(param)
-        new_image.show()
+        # new_image.show()
         return new_image
     
     def save_image(self, path: str) -> None:
@@ -142,10 +144,20 @@ def addtext(im: Image.Image, texts, font, c: tuple, loc: tuple):
     # create draw object
     img = im
     draw = ImageDraw.Draw(img)
-    draw.text(xy=loc,
-              text=texts,
-              font=font,
-              fill=c)
+    draw.text(xy=loc, text=texts, font=font, fill=c)
 
-    img.show()
+    # img.show()
     return img
+
+
+def remove_background(im: Image.Image, **kwargs) -> Image.Image:
+    """Remove background from image.
+
+    Args:
+        im (Image.Image): Image to remove background from.
+
+    Returns:
+        Image.Image: Image with bakcground removed.
+    """
+    output = rembg.remove(im, **kwargs)
+    return output
