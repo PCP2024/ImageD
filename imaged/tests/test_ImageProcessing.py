@@ -1,6 +1,7 @@
 import unittest
 from PIL import Image
 from imaged.processing.ImageProcessing import ImageProcessor
+from imaged.processing.ImageProcessing import remove_background
 from pathlib import Path
 
 
@@ -36,6 +37,22 @@ class TestImageProcessor(unittest.TestCase):
         result = self.processor.sharpness(param)
         self.assertIsInstance(result, Image.Image)
         # Add assertions to check if the sharpness is adjusted correctly
+
+    def test_remove_background(self):
+        # Load test image
+        image_path = "imaged/demodata/nerve-cell.png"
+        image = Image.open(image_path)
+
+        # Call remove_background function
+        result = remove_background(image)
+
+        # Assert that the result is an instance of Image.Image
+        self.assertIsInstance(result, Image.Image)
+        # Add additional assertions to check if the background is removed correctly
+        desired_result_path = "imaged/demodata/nerve-cell-no-bg.png"
+        desired_result = Image.open(desired_result_path)
+        self.assertEqual(result.size, desired_result.size)
+        self.assertEqual(result.mode, desired_result.mode)
 
 
 if __name__ == "__main__":
