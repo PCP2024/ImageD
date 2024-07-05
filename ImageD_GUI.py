@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("My App")
+        self.setWindowTitle("ImageD - The best Image Processor")
 
         self.image = None
         self.image_processor = None
@@ -38,6 +38,7 @@ class MainWindow(QMainWindow):
         self.contrast_param = 1.0
         self.color_param = 1.0
         self.sharpness_param = 1.0
+        self.counter = 0
 
         self.label = QLabel("Load an Image!")
         self.label.setMargin(10)
@@ -60,6 +61,9 @@ class MainWindow(QMainWindow):
         edit_menu = menu.addMenu("Edit")
         self.add_edit_actions(edit_menu)
 
+        analyze_menu = menu.addMenu("Analyze")
+        #analyze_menu.addAction(QAction("Cell counter", self, triggered = self.mousePressEvent))
+
     def add_edit_actions(self, edit_menu):
         actions = [
             ("Brightness", self.edit_brightness),
@@ -75,6 +79,14 @@ class MainWindow(QMainWindow):
             action = QAction(name, self)
             action.triggered.connect(self.wrap_in_try_except(method, name))
             edit_menu.addAction(action)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.counter += 1
+            print(self.counter)
+            print("left")
+            print(event.pos().x(), event.pos().y())
+            self.start_count()
 
     def wrap_in_try_except(self, func, action_name):
         def wrapper():
@@ -300,6 +312,12 @@ class MainWindow(QMainWindow):
             except ValueError:
                 pass
         return None, False
+    
+    def start_count(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Cell counter")
+        layout = QVBoxLayout()
+        return None
 
 def main():
     app = QApplication(sys.argv)
