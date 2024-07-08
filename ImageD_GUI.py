@@ -48,6 +48,13 @@ class MainWindow(QMainWindow):
         self.color_param = 1.0
         self.sharpness_param = 1.0
         self.counter = 0
+        self.scale = (0,"um")
+        # last mouse presses
+        self.x1 = 0
+        self.x2 = 0
+        self.y1 = 0
+        self.y2 = 0
+        self.measurement = 0
 
         self.label = QLabel("Load an Image!")
         self.label.setMargin(10)
@@ -72,6 +79,10 @@ class MainWindow(QMainWindow):
 
         analyze_menu = menu.addMenu("Analyze")
         analyze_menu.addAction(QAction("Cell counter", self, triggered = self.start_count))
+        analyze_menu.addAction(QAction("Clear count", self, triggered = self.clear_count))
+        analyze_menu.addAction(QAction("Display scale", self, triggered = self.display_scale))
+        analyze_menu.addAction(QAction("Set scale", self, triggered = self.set_scale))
+        analyze_menu.addAction(QAction("Measure", self, triggered = self.measure))
 
     def add_edit_actions(self, edit_menu):
         actions = [
@@ -95,8 +106,12 @@ class MainWindow(QMainWindow):
             self.counter += 1
             print(self.counter)
             print("left")
-            print(event.pos().x(), event.pos().y())
-            self.start_count()
+            self.x2 = self.x1
+            self.x1 = event.pos().x()
+            self.y2 = self.y1
+            self.y1 = event.pos().y()
+            self.measurement = np.sqrt(np.abs(self.x2 - self.x1)**2 + np.abs(self.y2 - self.y1)**2)
+            print(self.x1, self.y1)
 
     def wrap_in_try_except(self, func, action_name):
         def wrapper():
@@ -358,7 +373,8 @@ class MainWindow(QMainWindow):
         button_box = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok
         )
-        #layout.addWidget(button_box)
+
+        layout.addWidget(button_box)
         dialog.setLayout(layout)
     
         if dialog.exec() == QDialog.DialogCode.Accepted:
@@ -368,6 +384,78 @@ class MainWindow(QMainWindow):
                 pass
         
         return None, False
+    
+    def clear_count(self):
+        self.counter = 0
+        self.x1 = 0
+        self.x2 = 0
+        self.y1 = 0
+        self.y2 = 0
+        return None
+    
+    def set_scale(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Set Scale")
+        layout = QVBoxLayout()
+        width_edit = QLineEdit()
+        width_edit.setPlaceholderText("Enter length measurement")
+        layout.addWidget(width_edit)
+        unit_edit = QLineEdit()
+        unit_edit.setPlaceholderText("Enter units")
+        layout.addWidget(unit_edit)
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
+        dialog.setLayout(layout)
+        self.scale = self.measurement / int(width_edit.text()) *100
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            try:
+                self.scale = (str(self.scale),unit_edit.text())
+                return None, True
+            except ValueError:
+                pass
+        return None, False
+    
+    def display_scale(self):
+        dialog = QDialog(self)
+        layout = QVBoxLayout()
+        dialog.setWindowTitle("Scale:")
+        widget = QLabel(str(self.scale[0]) + str(self.scale[1]))
+        font = widget.font()
+        font.setPointSize(30)
+        widget.setFont(font)
+        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        layout.addWidget(widget)
+    
+        dialog.setLayout(layout)
+    
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            try:
+                return None, True
+            except ValueError:
+                pass
+
+    def measure(self):
+        dialog = QDialog(self)
+        layout = QVBoxLayout()
+        dialog.setWindowTitle("Measurement:")
+        widget = QLabel(str(self.measurement))
+        font = widget.font()
+        font.setPointSize(30)
+        widget.setFont(font)
+        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        layout.addWidget(widget)
+    
+        dialog.setLayout(layout)
+    
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            try:
+                return None, True
+            except ValueError:
+                pass
 
 
 def main():
