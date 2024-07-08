@@ -155,15 +155,11 @@ def main():
         image = imaged.processing.ImageProcessing.rotate(image, rotate)
         image.show()
 
-    # output ()
     if args.output_image is not None or config.get("output_image", None) is not None:
         output_image = args.output_image if args.output_image is not None else config.get(
             "output_image", None)
         output_instance = imaged.dataio.ImageLoader(output_image)
         output_instance.save_image(image, save_path=output_image)
-
-    # image = PIL.Image.open(args.input_image)
-    # parser.add_argument("input_image", type=argparse.FileType('r'))
 
 
 if __name__ == "__main__":
