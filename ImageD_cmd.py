@@ -16,6 +16,7 @@ def main():
         epilog="Goodbye, thank you for using ImageD. You will be missed. xoxo",
         prog="ImageD",
     )
+
     with open("VERSION", "r") as f:
         program_version = f.readline()
 
@@ -42,6 +43,7 @@ def main():
             BRIGHTNESS_RATIO: brightness ratio. 0: black, 1: same, >1: brighter.
         """,
     )
+
     parser.add_argument(
         "--contrast",
         type=float,
@@ -52,6 +54,7 @@ def main():
             CONTRAST_RATIO: contrast ratio. 0: full grey, 1: same, >1: more contrast.
         """,
     )
+
     parser.add_argument(
         "--color",
         type=float,
@@ -97,6 +100,7 @@ def main():
         angle: counter-clockwise rotation angle in degrees
     """,
     )
+
     parser.add_argument(
         "--remove_background",
         action="store_true",
