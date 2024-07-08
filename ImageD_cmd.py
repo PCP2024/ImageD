@@ -108,7 +108,7 @@ def main():
 
     # Process image
     if args.remove_background:
-        image = imaged.processing.ImageProcessing.remove_background(image_
+        image = imaged.processing.ImageProcessing.remove_background(image)
 
     if args.brightness is not None:
         process_instance = imaged.processing.ImageProcessing.ImageProcessor(image)

@@ -17,6 +17,8 @@ from PyQt6.QtWidgets import (
     QDialogButtonBox,
     QLineEdit,
     QColorDialog,
+    QTableWidget,
+    QTableWidgetItem
 )
 from PyQt6.QtGui import QIcon, QAction, QPixmap
 from PyQt6.QtCore import QSize, Qt
@@ -30,7 +32,6 @@ from imaged.processing.ImageProcessing import (
     addtext,
     remove_background,
 )
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -70,7 +71,7 @@ class MainWindow(QMainWindow):
         self.add_edit_actions(edit_menu)
 
         analyze_menu = menu.addMenu("Analyze")
-        #analyze_menu.addAction(QAction("Cell counter", self, triggered = self.mousePressEvent))
+        analyze_menu.addAction(QAction("Cell counter", self, triggered = self.start_count))
 
     def add_edit_actions(self, edit_menu):
         actions = [
@@ -343,11 +344,30 @@ class MainWindow(QMainWindow):
                 pass
         return None, False
     
-    def start_count(self):
+    def start_count(self, integer=False):
         dialog = QDialog(self)
-        dialog.setWindowTitle("Cell counter")
         layout = QVBoxLayout()
-        return None
+        dialog.setWindowTitle("cell counter")
+        widget = QLabel(str(self.counter))
+        font = widget.font()
+        font.setPointSize(30)
+        widget.setFont(font)
+        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        layout.addWidget(widget)
+        
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok
+        )
+        #layout.addWidget(button_box)
+        dialog.setLayout(layout)
+    
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            try:
+                return None, True
+            except ValueError:
+                pass
+        
+        return None, False
 
 
 def main():
