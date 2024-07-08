@@ -16,5 +16,18 @@
             "scale": 0,
             "scale_unit": "um"
         }
+    ],
+    "CMD": [
+        {
+            "type": "cmd_params",
+            "remove_background": null,
+            "brightness": null,
+            "contrast": null,
+            "color": null,
+            "sharpness": null,
+            "resize": null,
+            "rotate": null,
+            "output_image": null
+        }
     ]
 }
