@@ -32,6 +32,8 @@ from imaged.processing.ImageProcessing import (
     addtext,
     remove_background,
 )
+import json
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -43,12 +45,18 @@ class MainWindow(QMainWindow):
         self.image_processor = None
 
         # Initialize adjustment parameters
-        self.brightness_param = 1.0
-        self.contrast_param = 1.0
-        self.color_param = 1.0
-        self.sharpness_param = 1.0
-        self.counter = 0
-        self.scale = (0,"um")
+        self.config = json.load(open("config.json"))
+
+        self.brightness_param = self.config.get(
+            "GUI", 1.0)[0].get("brightness", 1.0)
+        self.contrast_param = self.config.get(
+            "GUI", 1.0)[0].get("contrast", 1.0)
+        self.color_param = self.config.get("GUI", 1.0)[0].get("color", 1.0)
+        self.sharpness_param = self.config.get(
+            "GUI", 1.0)[0].get("sharpness", 1.0)
+        self.counter = self.config.get("GUI", 1.0)[0].get("counter", 1.0)
+        self.scale = (self.config.get("GUI", 0.0)[0].get(
+            "scale", 0.0), self.config.get("GUI", "um")[0].get("scale_unit", "um"))
         # last mouse presses
         self.x1 = 0
         self.x2 = 0
@@ -72,17 +80,23 @@ class MainWindow(QMainWindow):
         menu = self.menuBar()
         file_menu = menu.addMenu("File")
         file_menu.addAction(button_action_load)
-        file_menu.addAction(QAction("Save As...", self, triggered=self.save_image))
+        file_menu.addAction(
+            QAction("Save As...", self, triggered=self.save_image))
 
         edit_menu = menu.addMenu("Edit")
         self.add_edit_actions(edit_menu)
 
         analyze_menu = menu.addMenu("Analyze")
-        analyze_menu.addAction(QAction("Cell counter", self, triggered = self.start_count))
-        analyze_menu.addAction(QAction("Clear count", self, triggered = self.clear_count))
-        analyze_menu.addAction(QAction("Display scale", self, triggered = self.display_scale))
-        analyze_menu.addAction(QAction("Set scale", self, triggered = self.set_scale))
-        analyze_menu.addAction(QAction("Measure", self, triggered = self.measure))
+        analyze_menu.addAction(
+            QAction("Cell counter", self, triggered=self.start_count))
+        analyze_menu.addAction(
+            QAction("Clear count", self, triggered=self.clear_count))
+        analyze_menu.addAction(
+            QAction("Display scale", self, triggered=self.display_scale))
+        analyze_menu.addAction(
+            QAction("Set scale", self, triggered=self.set_scale))
+        analyze_menu.addAction(
+            QAction("Measure", self, triggered=self.measure))
 
     def add_edit_actions(self, edit_menu):
         actions = [
@@ -110,7 +124,8 @@ class MainWindow(QMainWindow):
             self.x1 = event.pos().x()
             self.y2 = self.y1
             self.y1 = event.pos().y()
-            self.measurement = np.sqrt(np.abs(self.x2 - self.x1)**2 + np.abs(self.y2 - self.y1)**2)
+            self.measurement = np.sqrt(
+                np.abs(self.x2 - self.x1)**2 + np.abs(self.y2 - self.y1)**2)
             print(self.x1, self.y1)
 
     def wrap_in_try_except(self, func, action_name):
@@ -227,13 +242,15 @@ class MainWindow(QMainWindow):
                     location, ok = self.get_location()
                     if ok:
                         # Specify the path to the font file
-                        font_path = os.path.join(os.path.dirname(__file__), "arial.ttf")
+                        font_path = os.path.join(
+                            os.path.dirname(__file__), "arial.ttf")
                         try:
                             font = ImageFont.truetype(font_path, font_size)
                         except IOError:
                             print(f"Error: Could not load font at {font_path}")
                             return
-                        new_image = addtext(self.image, text, font, color, location)
+                        new_image = addtext(
+                            self.image, text, font, color, location)
                         self.image_processor.image = new_image
                         self.show_image(new_image)
 
@@ -263,7 +280,8 @@ class MainWindow(QMainWindow):
         dialog = QDialog(self)
         dialog.setWindowTitle(title)
         layout = QVBoxLayout()
-        slider = QSlider(Qt.Orientation.Horizontal)  # Corrected attribute access
+        # Corrected attribute access
+        slider = QSlider(Qt.Orientation.Horizontal)
         slider.setRange(0, 100)
         slider.setValue(50)
         layout.addWidget(slider)
@@ -278,7 +296,8 @@ class MainWindow(QMainWindow):
         dialog.setLayout(layout)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
-                value = int(line_edit.text()) if integer else float(line_edit.text())
+                value = int(line_edit.text()) if integer else float(
+                    line_edit.text())
             except ValueError:
                 value = slider.value() / 50 if not integer else slider.value() - 50
             return value, True
@@ -358,7 +377,7 @@ class MainWindow(QMainWindow):
             except ValueError:
                 pass
         return None, False
-    
+
     def start_count(self, integer=False):
         dialog = QDialog(self)
         layout = QVBoxLayout()
@@ -367,24 +386,25 @@ class MainWindow(QMainWindow):
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
-        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter |
+                            Qt.AlignmentFlag.AlignVCenter)
         layout.addWidget(widget)
-        
+
         button_box = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok
         )
 
         layout.addWidget(button_box)
         dialog.setLayout(layout)
-    
+
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
                 return None, True
             except ValueError:
                 pass
-        
+
         return None, False
-    
+
     def clear_count(self):
         self.counter = 0
         self.x1 = 0
@@ -392,7 +412,7 @@ class MainWindow(QMainWindow):
         self.y1 = 0
         self.y2 = 0
         return None
-    
+
     def set_scale(self):
         dialog = QDialog(self)
         dialog.setWindowTitle("Set Scale")
@@ -410,15 +430,15 @@ class MainWindow(QMainWindow):
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
         dialog.setLayout(layout)
-        self.scale = self.measurement / int(width_edit.text()) *100
+        self.scale = self.measurement / int(width_edit.text()) * 100
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
-                self.scale = (str(self.scale),unit_edit.text())
+                self.scale = (str(self.scale), unit_edit.text())
                 return None, True
             except ValueError:
                 pass
         return None, False
-    
+
     def display_scale(self):
         dialog = QDialog(self)
         layout = QVBoxLayout()
@@ -427,11 +447,12 @@ class MainWindow(QMainWindow):
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
-        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter |
+                            Qt.AlignmentFlag.AlignVCenter)
         layout.addWidget(widget)
-    
+
         dialog.setLayout(layout)
-    
+
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
                 return None, True
@@ -446,11 +467,12 @@ class MainWindow(QMainWindow):
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
-        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter |
+                            Qt.AlignmentFlag.AlignVCenter)
         layout.addWidget(widget)
-    
+
         dialog.setLayout(layout)
-    
+
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
                 return None, True

@@ -1,0 +1,20 @@
+{
+    "textEditor": [
+        {
+            "type": "text",
+            "font": "Arial"
+        }
+    ],
+    "GUI": [
+        {
+            "type": "image_params",
+            "brightness": 1.0,
+            "contrast": 1.0,
+            "color": 1.0,
+            "sharpness": 1.0,
+            "counter": 0,
+            "scale": 0,
+            "scale_unit": "um"
+        }
+    ]
+}
