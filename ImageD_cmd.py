@@ -20,9 +20,11 @@ def main():
         program_version = f.readline()
 
     parser.add_argument("--version", action="version", version=program_version)
+
     parser.add_argument(
         "input_image", help="file path for input image 1", metavar="IMAGE_IN_PATH"
     )
+
     parser.add_argument(
         "-o",
         "--output_image",
