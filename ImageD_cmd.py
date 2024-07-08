@@ -108,26 +108,31 @@ def main():
 
     # Process image
     if args.remove_background:
-        image = imaged.processing.ImageProcessing.remove_background(image_
+        image = imaged.processing.ImageProcessing.remove_background(image)
 
     if args.brightness is not None:
-        process_instance = imaged.processing.ImageProcessing.ImageProcessor(image)
+        process_instance = imaged.processing.ImageProcessing.ImageProcessor(
+            image)
         image = process_instance.brightness(args.brightness)
 
     if args.contrast is not None:
-        process_instance = imaged.processing.ImageProcessing.ImageProcessor(image)
+        process_instance = imaged.processing.ImageProcessing.ImageProcessor(
+            image)
         image = process_instance.contrast(args.contrast)
 
     if args.color is not None:
-        process_instance = imaged.processing.ImageProcessing.ImageProcessor(image)
+        process_instance = imaged.processing.ImageProcessing.ImageProcessor(
+            image)
         image = process_instance.contrast(args.color)
 
     if args.sharpness is not None:
-        process_instance = imaged.processing.ImageProcessing.ImageProcessor(image)
+        process_instance = imaged.processing.ImageProcessing.ImageProcessor(
+            image)
         image = process_instance.contrast(args.sharpness)
 
     if args.resize is not None:
-        image = imaged.processing.ImageProcessing.resize(image, tuple(args.resize))
+        image = imaged.processing.ImageProcessing.resize(
+            image, tuple(args.resize))
         image.show()
 
     if args.rotate is not None:
