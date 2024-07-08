@@ -1,3 +1,8 @@
+### Version 1.2.0 - 08.07.24
+- Added default values in `config.json` to both CMD and GUI code
+- Cleaned up some code to get ready for final production
+- Cleaned up GUI
+
 ### Version 1.1.0 - 02.07.24
 - Added `remove_background` function to the image processing module.
 - The `remove_background` function utilizes advanced algorithms from the `rembg` library 
