@@ -34,7 +34,8 @@ from imaged.processing.ImageProcessing import (
     remove_background,
 )
 from imaged.analyze.analyze import(
-    measure
+    measure,
+    determine_scale
 )
 import json
 
@@ -47,6 +48,7 @@ class MainWindow(QMainWindow):
 
         self.image = None
         self.image_processor = None
+        self.ogimage = None
 
         # Initialize adjustment parameters
         self.config = json.load(open("config.json"))
@@ -154,6 +156,7 @@ class MainWindow(QMainWindow):
         )
         if file_name:
             self.image = Image.open(file_name)
+            self.ogimage = self.image
             self.image_processor = ImageProcessor(self.image)
             self.show_image(self.image)
 
@@ -418,7 +421,7 @@ class MainWindow(QMainWindow):
         self.x2 = 0
         self.y1 = 0
         self.y2 = 0
-        self.show_image(self.image)
+        self.show_image(self.ogimage)
         return None
 
     def set_scale(self):
@@ -440,8 +443,8 @@ class MainWindow(QMainWindow):
         dialog.setLayout(layout)
         
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            try:
-                self.scale = (int(width_edit.text()) / self.measurement * 100,unit_edit.text())  
+            try: 
+                self.scale = determine_scale(int(width_edit.text()),self.measurement,unit_edit.text())
                 print(self.scale) 
                 return None, True
             except ValueError:
