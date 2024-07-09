@@ -1,7 +1,11 @@
-### Version 1.2.1 - 2024-07-09
+### Version 1.2.2 - 2024-07-09
+- fixed mouse click
+- added CLI and GUI usage to README
+
+### Version 1.2.1 - 2024-07-08
 - Added docker container for CLI
 
-### Version 1.2.0 - 2024-07-08
+### Version 1.2.0 - 2024-07-07
 - Added default values in `config.json` to both CMD and GUI code
 - Cleaned up some code to get ready for final production
 - Cleaned up GUI
