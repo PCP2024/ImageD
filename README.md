@@ -23,6 +23,18 @@ source .venv/bin/activate
 pip install requirements.txt
 ```
 
+## CLI
+You can use our command-line interface with the following command:
+```console
+$ python ImageD_cmd.py --help
+```
+
+## GUI
+Or you might choose to use GUI with advanced cell counting by running:
+```console
+$ python ImageD_GUI.py
+```
+
 
 ## Docker
 _Docker image has only access to the CLI interface and cannot display any images at the moment. The communication via X server protocol may be added in the future._

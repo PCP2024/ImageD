@@ -18,7 +18,7 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QColorDialog,
     QTableWidget,
-    QTableWidgetItem
+    QTableWidgetItem,
 )
 from PyQt6.QtGui import QIcon, QAction, QPixmap
 from PyQt6.QtCore import QSize, Qt
@@ -33,10 +33,7 @@ from imaged.processing.ImageProcessing import (
     adddot,
     remove_background,
 )
-from imaged.analyze.analyze import(
-    measure,
-    determine_scale
-)
+from imaged.analyze.analyze import measure, determine_scale
 import json
 
 
@@ -53,16 +50,15 @@ class MainWindow(QMainWindow):
         # Initialize adjustment parameters
         self.config = json.load(open("config.json"))
 
-        self.brightness_param = self.config.get(
-            "GUI", 1.0)[0].get("brightness", 1.0)
-        self.contrast_param = self.config.get(
-            "GUI", 1.0)[0].get("contrast", 1.0)
+        self.brightness_param = self.config.get("GUI", 1.0)[0].get("brightness", 1.0)
+        self.contrast_param = self.config.get("GUI", 1.0)[0].get("contrast", 1.0)
         self.color_param = self.config.get("GUI", 1.0)[0].get("color", 1.0)
-        self.sharpness_param = self.config.get(
-            "GUI", 1.0)[0].get("sharpness", 1.0)
+        self.sharpness_param = self.config.get("GUI", 1.0)[0].get("sharpness", 1.0)
         self.counter = self.config.get("GUI", 1.0)[0].get("counter", 1.0)
-        self.scale = (self.config.get("GUI", 0.0)[0].get(
-            "scale", 0.0), self.config.get("GUI", "um")[0].get("scale_unit", "um"))
+        self.scale = (
+            self.config.get("GUI", 0.0)[0].get("scale", 0.0),
+            self.config.get("GUI", "um")[0].get("scale_unit", "um"),
+        )
         # last mouse presses
         self.x1 = 0
         self.x2 = 0
@@ -86,23 +82,21 @@ class MainWindow(QMainWindow):
         menu = self.menuBar()
         file_menu = menu.addMenu("File")
         file_menu.addAction(button_action_load)
-        file_menu.addAction(
-            QAction("Save As...", self, triggered=self.save_image))
+        file_menu.addAction(QAction("Save As...", self, triggered=self.save_image))
 
         edit_menu = menu.addMenu("Edit")
         self.add_edit_actions(edit_menu)
 
         analyze_menu = menu.addMenu("Analyze")
         analyze_menu.addAction(
-            QAction("Cell counter", self, triggered=self.start_count))
+            QAction("Cell counter", self, triggered=self.start_count)
+        )
+        analyze_menu.addAction(QAction("Clear count", self, triggered=self.clear_count))
         analyze_menu.addAction(
-            QAction("Clear count", self, triggered=self.clear_count))
-        analyze_menu.addAction(
-            QAction("Display scale", self, triggered=self.display_scale))
-        analyze_menu.addAction(
-            QAction("Set scale", self, triggered=self.set_scale))
-        analyze_menu.addAction(
-            QAction("Measure", self, triggered=self.measure))
+            QAction("Display scale", self, triggered=self.display_scale)
+        )
+        analyze_menu.addAction(QAction("Set scale", self, triggered=self.set_scale))
+        analyze_menu.addAction(QAction("Measure", self, triggered=self.measure))
 
     def add_edit_actions(self, edit_menu):
         actions = [
@@ -130,9 +124,11 @@ class MainWindow(QMainWindow):
             self.x1 = event.pos().x()
             self.y2 = self.y1
             self.y1 = event.pos().y()
-            self.measurement = measure(self.x1,self.y1,self.x2,self.y2)
+            self.measurement = measure(self.x1, self.y1, self.x2, self.y2)
             # print dot
-            new_image = adddot(self.image, (self.x1-15,self.y1-105,self.x1+5,self.y1-85))
+            new_image = adddot(
+                self.image, (self.x1 - 15, self.y1 - 75, self.x1 + 5, self.y1 - 55)
+            )
             self.image_processor.image = new_image
             self.show_image(new_image)
             print(self.x1, self.y1)
@@ -225,6 +221,8 @@ class MainWindow(QMainWindow):
         if ok:
             new_image = resize(self.image, new_size)
             self.image_processor.image = new_image
+            self.image = new_image
+            self.ogimage = new_image
             self.show_image(new_image)
 
     def edit_rotate(self):
@@ -235,6 +233,8 @@ class MainWindow(QMainWindow):
             try:
                 new_image = rotate(self.image, angle)
                 self.image_processor.image = new_image
+                self.image = new_image
+                self.ogimage = new_image
                 self.show_image(new_image)
             except Exception as e:
                 print(f"Error rotating image: {e}")
@@ -252,16 +252,16 @@ class MainWindow(QMainWindow):
                     location, ok = self.get_location()
                     if ok:
                         # Specify the path to the font file
-                        font_path = os.path.join(
-                            os.path.dirname(__file__), "arial.ttf")
+                        font_path = os.path.join(os.path.dirname(__file__), "arial.ttf")
                         try:
                             font = ImageFont.truetype(font_path, font_size)
                         except IOError:
                             print(f"Error: Could not load font at {font_path}")
                             return
-                        new_image = addtext(
-                            self.image, text, font, color, location)
+                        new_image = addtext(self.image, text, font, color, location)
                         self.image_processor.image = new_image
+                        self.image = new_image
+                        self.ogimage = new_image
                         self.show_image(new_image)
 
     def edit_remove_background(self):
@@ -270,6 +270,8 @@ class MainWindow(QMainWindow):
         try:
             new_image = remove_background(self.image)
             self.show_image(new_image)
+            self.image = new_image
+            self.ogimage = new_image
         except Exception as e:
             print(f"Error removing background: {e}")
             traceback.print_exc()
@@ -306,8 +308,7 @@ class MainWindow(QMainWindow):
         dialog.setLayout(layout)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
-                value = int(line_edit.text()) if integer else float(
-                    line_edit.text())
+                value = int(line_edit.text()) if integer else float(line_edit.text())
             except ValueError:
                 value = slider.value() / 50 if not integer else slider.value() - 50
             return value, True
@@ -396,13 +397,12 @@ class MainWindow(QMainWindow):
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
-        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter |
-                            Qt.AlignmentFlag.AlignVCenter)
+        widget.setAlignment(
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        )
         layout.addWidget(widget)
 
-        button_box = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Ok
-        )
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
 
         layout.addWidget(button_box)
         dialog.setLayout(layout)
@@ -441,11 +441,13 @@ class MainWindow(QMainWindow):
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
         dialog.setLayout(layout)
-        
+
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            try: 
-                self.scale = determine_scale(int(width_edit.text()),self.measurement,unit_edit.text())
-                print(self.scale) 
+            try:
+                self.scale = determine_scale(
+                    int(width_edit.text()), self.measurement, unit_edit.text()
+                )
+                print(self.scale)
                 return None, True
             except ValueError:
                 pass
@@ -455,12 +457,13 @@ class MainWindow(QMainWindow):
         dialog = QDialog(self)
         layout = QVBoxLayout()
         dialog.setWindowTitle("Scale per 100 pixels:")
-        widget = QLabel(str(np.round(self.scale[0],2)) + str(self.scale[1]))
+        widget = QLabel(str(np.round(self.scale[0], 2)) + str(self.scale[1]))
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
-        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter |
-                            Qt.AlignmentFlag.AlignVCenter)
+        widget.setAlignment(
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        )
         layout.addWidget(widget)
 
         dialog.setLayout(layout)
@@ -475,12 +478,15 @@ class MainWindow(QMainWindow):
         dialog = QDialog(self)
         layout = QVBoxLayout()
         dialog.setWindowTitle("Measurement:")
-        widget = QLabel(str(np.round(self.measurement*self.scale[0]/100,2)) + self.scale[1])
+        widget = QLabel(
+            str(np.round(self.measurement * self.scale[0] / 100, 2)) + self.scale[1]
+        )
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
-        widget.setAlignment(Qt.AlignmentFlag.AlignHCenter |
-                            Qt.AlignmentFlag.AlignVCenter)
+        widget.setAlignment(
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        )
         layout.addWidget(widget)
 
         dialog.setLayout(layout)
