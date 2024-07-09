@@ -33,6 +33,9 @@ from imaged.processing.ImageProcessing import (
     adddot,
     remove_background,
 )
+from imaged.analyze.analyze import(
+    measure
+)
 import json
 
 
@@ -125,8 +128,7 @@ class MainWindow(QMainWindow):
             self.x1 = event.pos().x()
             self.y2 = self.y1
             self.y1 = event.pos().y()
-            self.measurement = np.round(np.sqrt(
-                np.abs(self.x2 - self.x1)**2 + np.abs(self.y2 - self.y1)**2),2)
+            self.measurement = measure(self.x1,self.y1,self.x2,self.y2)
             # print dot
             new_image = adddot(self.image, (self.x1-15,self.y1-105,self.x1+5,self.y1-85))
             self.image_processor.image = new_image
