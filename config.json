@@ -13,8 +13,8 @@
             "color": 1.0,
             "sharpness": 1.0,
             "counter": 0,
-            "scale": 0,
-            "scale_unit": "um"
+            "scale": 100,
+            "scale_unit": "pixels"
         }
     ],
     "CMD": [

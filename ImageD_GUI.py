@@ -430,10 +430,11 @@ class MainWindow(QMainWindow):
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
         dialog.setLayout(layout)
-        self.scale = self.measurement / int(width_edit.text()) * 100
+        
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
-                self.scale = (str(self.scale), unit_edit.text())
+                self.scale = (int(width_edit.text()) / self.measurement * 100,unit_edit.text())  
+                print(self.scale) 
                 return None, True
             except ValueError:
                 pass
@@ -442,8 +443,8 @@ class MainWindow(QMainWindow):
     def display_scale(self):
         dialog = QDialog(self)
         layout = QVBoxLayout()
-        dialog.setWindowTitle("Scale:")
-        widget = QLabel(str(self.scale[0]) + str(self.scale[1]))
+        dialog.setWindowTitle("Scale per 100 pixels:")
+        widget = QLabel(str(np.round(self.scale[0],2)) + str(self.scale[1]))
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)
