@@ -1,3 +1,6 @@
+### Version 1.2.1 - 2024-07-09
+- Added docker container for CLI
+
 ### Version 1.2.0 - 08.07.24
 - Added default values in `config.json` to both CMD and GUI code
 - Cleaned up some code to get ready for final production
