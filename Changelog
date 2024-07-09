@@ -1,13 +1,13 @@
 ### Version 1.2.1 - 2024-07-09
 - Added docker container for CLI
 
-### Version 1.2.0 - 08.07.24
+### Version 1.2.0 - 2024-07-08
 - Added default values in `config.json` to both CMD and GUI code
 - Cleaned up some code to get ready for final production
 - Cleaned up GUI
 - Added `count`,`measure`,`set scale` functions to analyze
 
-### Version 1.1.0 - 02.07.24
+### Version 1.1.0 - 2024-07-02
 - Added `remove_background` function to the image processing module.
 - The `remove_background` function utilizes advanced algorithms from the `rembg` library 
 to accurately remove the background from images.
@@ -16,7 +16,7 @@ to accurately remove the background from images.
 - GUI & CMD for works with `remove_background`
 
 
-### Version 1.0.0 - 11.06.24
+### Version 1.0.0 - 2024-06-11
 First major release with GUI!
 
 - Introduced a Graphical User Interface (GUI) for easier interaction with the application.
@@ -27,21 +27,21 @@ First major release with GUI!
 - Enhanced user experience with a straightforward and intuitive design, making image processing tasks more accessible to users.
 - Fixed various bugs and improved the stability of the application.
 
-### Version 0.0.3 - 28.05.24
+### Version 0.0.3 - 2024-05-28
 We have a working CLI! Woohoo!
 - JSON file in configuration still missing
 - Fixed Loader Tests
 - Added "Add text" feature to image, set a scale
 - We should decide on whether we want a graphical user interface
 
-### Version 0.0.2 - 14.05.24
+### Version 0.0.2 - 2024-05-14
 - Added the first functionalities!
 - Added functions to rotate, resize, and change resolution of images
 - Added functions to take difference/superposition of images 
 - Added functions to change colours, saturation, contrast of images
 - This is starting to take shape
 
-### Version 0.0.1 - 30.04.24
+### Version 0.0.1 - 2024-04-30
 - Started the project!
 - Added an image loader/saver
 
@@ -55,5 +55,6 @@ Intended final product/ideas:
 - selection tool, colour picker etc.
 - history of images and proper undo
 - automatic counting and manual adjusting (once we have graphical interface), automatic edge and contour detection.
+
 
 
