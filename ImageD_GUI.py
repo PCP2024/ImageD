@@ -30,6 +30,7 @@ from imaged.processing.ImageProcessing import (
     reshape,
     rotate,
     addtext,
+    adddot,
     remove_background,
 )
 import json
@@ -124,8 +125,12 @@ class MainWindow(QMainWindow):
             self.x1 = event.pos().x()
             self.y2 = self.y1
             self.y1 = event.pos().y()
-            self.measurement = np.sqrt(
-                np.abs(self.x2 - self.x1)**2 + np.abs(self.y2 - self.y1)**2)
+            self.measurement = np.round(np.sqrt(
+                np.abs(self.x2 - self.x1)**2 + np.abs(self.y2 - self.y1)**2),2)
+            # print dot
+            new_image = adddot(self.image, (self.x1-15,self.y1-105,self.x1+5,self.y1-85))
+            self.image_processor.image = new_image
+            self.show_image(new_image)
             print(self.x1, self.y1)
 
     def wrap_in_try_except(self, func, action_name):
@@ -411,6 +416,7 @@ class MainWindow(QMainWindow):
         self.x2 = 0
         self.y1 = 0
         self.y2 = 0
+        self.show_image(self.image)
         return None
 
     def set_scale(self):
@@ -464,7 +470,7 @@ class MainWindow(QMainWindow):
         dialog = QDialog(self)
         layout = QVBoxLayout()
         dialog.setWindowTitle("Measurement:")
-        widget = QLabel(str(self.measurement))
+        widget = QLabel(str(np.round(self.measurement*self.scale[0]/100,2)) + self.scale[1])
         font = widget.font()
         font.setPointSize(30)
         widget.setFont(font)

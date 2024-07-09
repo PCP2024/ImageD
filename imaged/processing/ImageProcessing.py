@@ -149,6 +149,18 @@ def addtext(im: Image.Image, texts, font, c: tuple, loc: tuple):
     # img.show()
     return img
 
+def adddot(im: Image.Image, loc: tuple):
+
+    # create draw object
+    img = im
+    draw = ImageDraw.Draw(img)
+    draw.rectangle(xy = loc,  
+            fill = (0, 127, 0), 
+            width = 5) 
+
+    # img.show()
+    return img
+
 
 def remove_background(im: Image.Image, **kwargs) -> Image.Image:
     """Remove background from image.
